@@ -2,14 +2,20 @@
 
 using System.Activities;
 using Microsoft.Xrm.Sdk;
-using Microsoft.Xrm.Sdk.Client;
-using Microsoft.Xrm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Query;
 using Microsoft.Xrm.Sdk.Workflow;
 
-namespace CreateActivityPartyFromString
+namespace CreateActivityParty
 {
-    public class CreateActivityParty : CodeActivity
+    /// <summary>
+    /// Allows a user to create an ActivityParty record using a string extending the functionality of the built in CRM workflows
+    /// </summary>
+    /// <remarks>
+    /// Usage - 
+    /// Create a workflow which creates the email sans values in the To field. Add this workflow step and assign a string
+    /// and a reference to the email record. Then create a step to change status of the email record to sent.
+    /// </remarks
+    public class CreateActivityPartyFromString : CodeActivity
     {
         [RequiredArgument]
         [Input("String to Convert")]
