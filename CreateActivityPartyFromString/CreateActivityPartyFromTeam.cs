@@ -7,6 +7,10 @@ using Microsoft.Xrm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Query;
 using Microsoft.Xrm.Sdk.Workflow;
 
+// This namespace is found in Microsoft.Crm.Sdk.Proxy.dll assembly
+// found in the SDK\bin folder.
+using Microsoft.Crm.Sdk.Messages;
+
 namespace CreateActivityParty
 {
     /// <summary>
@@ -15,7 +19,7 @@ namespace CreateActivityParty
     /// <remarks>
     /// Usage - 
     /// Create a workflow which creates the email sans values in the To field. Add this workflow step and assign a team
-    /// and a reference to the email record. Then create a step to change status of the email record to sent.
+    /// and a reference to the email record.  This workflow will send the email
     /// </remarks
     public class CreateActivityPartyFromTeam : CodeActivity
     {
@@ -108,6 +112,17 @@ namespace CreateActivityParty
                 {
                     // Update the record
                     service.Update(retrievedEmail);
+
+                    // Create the send email request
+                    SendEmailRequest sendEmailReq = new SendEmailRequest
+                    {
+                        EmailId = emailRecordId,
+                        TrackingToken = "",
+                        IssueSend = true
+                    };
+
+                    // Send the email
+                    SendEmailResponse sendEmail = (SendEmailResponse)service.Execute(sendEmailReq);
                 }
                 catch (Exception err)
                 {
@@ -119,6 +134,7 @@ namespace CreateActivityParty
             {
                 tracingService.Trace("Failed to retrieve email - " + err.Message);
             }
+            
         }
     }
 }
